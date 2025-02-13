@@ -24,8 +24,13 @@ internal static class UsersEndpoints
         
         return group;
     }
-    static async Task<Results<Ok<UserDataResponse>, NotFound>> GetUser(string username, IUserService userService)
+    static async Task<Results<Ok<UserDataResponse>, NotFound>> GetUser(HttpContext context, string username, 
+        IUserService userService, ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("UsersEndpoints");
+        logger.LogInformation("Host {hostname} - Client {clientName} (IP {ip}) - GetUser: {username}", Environment.MachineName, 
+            context.Items["ClientName"], context.Connection.RemoteIpAddress, username);
+        
         var user = await userService.GetUser(username);
         if (user is not null)
         {
@@ -34,8 +39,14 @@ internal static class UsersEndpoints
         return TypedResults.NotFound();
     }
 
-    static async Task<Results<Created<UserDataResponse>, Conflict<ProblemDetails>, InternalServerError>> CreateUser(CreateUserRequest request, IUserService userService, IPasswordHasher<string> passwordHasher)
+    static async Task<Results<Created<UserDataResponse>, Conflict<ProblemDetails>, InternalServerError>> 
+        CreateUser(HttpContext context, CreateUserRequest request, IUserService userService, 
+            IPasswordHasher<string> passwordHasher, ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("UsersEndpoints");
+        logger.LogInformation("Host {hostname} - Client {clientName} (IP {ip}) - CreateUser: {user}", Environment.MachineName, 
+            context.Items["ClientName"], context.Connection.RemoteIpAddress, request.ToString());
+        
         var newUser = request.ToUser(passwordHasher);
         var result = await userService.CreateUser(newUser);
         return result switch
@@ -54,8 +65,14 @@ internal static class UsersEndpoints
         };
     }
     
-    static async Task<Results<Ok<UserDataResponse>, NotFound, InternalServerError>> UpdateUser(string username, UpdateUserRequest request, IUserService userService, IPasswordHasher<string> passwordHasher)
+    static async Task<Results<Ok<UserDataResponse>, NotFound, InternalServerError>> UpdateUser(HttpContext context, 
+        string username, UpdateUserRequest request, IUserService userService, IPasswordHasher<string> passwordHasher,
+        ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("UsersEndpoints");
+        logger.LogInformation("Host {hostname} - Client {clientName} (IP {ip}) - UpdateUser: {username} Data: {userdata}", 
+            Environment.MachineName, context.Items["ClientName"], context.Connection.RemoteIpAddress, username, request.ToString());
+        
         var updatedUser = request.ToUser(username, passwordHasher);
         var result = await userService.UpdateUser(updatedUser);
         return result switch
@@ -66,8 +83,13 @@ internal static class UsersEndpoints
         };
     }
     
-    static async Task<Results<Ok, NotFound, InternalServerError>> DeleteUser(string username, IUserService userService)
+    static async Task<Results<Ok, NotFound, InternalServerError>> DeleteUser(HttpContext context, string username, 
+        IUserService userService, ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("UsersEndpoints");
+        logger.LogInformation("Host {hostname} - Client {clientName} (IP {ip}) - DeleteUser: {username}", Environment.MachineName, 
+            context.Items["ClientName"], context.Connection.RemoteIpAddress, username);
+        
         var result = await userService.DeleteUser(username);
         return result switch
         {
@@ -77,8 +99,16 @@ internal static class UsersEndpoints
         };
     }
 
-    static async Task<Results<Ok<PasswordValidationResponse>, NotFound, InternalServerError>> ValidatePassword(string username, string password, IUserService userService, IPasswordHasher<string> passwordHasher)
+    static async Task<Results<Ok<PasswordValidationResponse>, NotFound, InternalServerError>> 
+        ValidatePassword(HttpContext context, string username, string password, IUserService userService, 
+            IPasswordHasher<string> passwordHasher, ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("UsersEndpoints");
+        logger.LogInformation("Host {hostname} - Client {clientName} (IP {ip}) - VerifyPassword: {username} - " +
+                              "Password hash: {hash}", Environment.MachineName, 
+            context.Items["ClientName"], context.Connection.RemoteIpAddress, username, 
+            passwordHasher.HashPassword(username, password));
+        
         return await userService.ValidatePassword(username, password, passwordHasher) switch
         {
             UserServiceResult.Success => TypedResults.Ok(new PasswordValidationResponse(true)),
