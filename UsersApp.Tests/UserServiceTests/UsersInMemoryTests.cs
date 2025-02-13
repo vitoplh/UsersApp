@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
-using SampleApp.Domain;
-using SampleApp.Infrastructure;
-using SampleApp.Services;
+using UsersApp.Domain;
+using UsersApp.Infrastructure;
+using UsersApp.Services;
 
-namespace SampleApp.Tests.UserServiceTests;
+namespace UsersApp.Tests.UserServiceTests;
 
 public class UsersInMemoryTests
 {
