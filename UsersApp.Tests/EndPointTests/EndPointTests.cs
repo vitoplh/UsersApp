@@ -14,6 +14,14 @@ public class EndPointTests(TestWebApplicationFactory<Program> factory)
     private readonly HttpClient _httpClient = factory.CreateClient();
 
     [Fact]
+    public async Task GetUserWithNoApiKey()
+    {
+        var response = await _httpClient.GetAsync("/users/username123");
+        
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
     public async Task PostUserWithValidParameters()
     {
         using (var scope = factory.Services.CreateScope())
