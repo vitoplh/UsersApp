@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
 using UsersApp.Infrastructure;
 using UsersApp.Services;
 using UsersApp.Api;
@@ -11,7 +12,10 @@ using UsersApp.Infrastructure.Authentication;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSerilog(lc => lc
     .WriteTo.Console()
-    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
