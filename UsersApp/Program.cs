@@ -5,7 +5,6 @@ using Serilog.Events;
 using UsersApp.Infrastructure;
 using UsersApp.Services;
 using UsersApp.Api;
-using UsersApp.Domain;
 using UsersApp.Infrastructure.Authentication;
 
 
@@ -54,3 +53,6 @@ await using (var dbContext = serviceScope.ServiceProvider.GetRequiredService<App
 app.UseHttpsRedirection();
 app.MapUsers();
 app.Run();
+
+public partial class Program
+{ }

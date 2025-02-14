@@ -158,6 +158,7 @@ public class UsersInMemoryTests
         Assert.Equal(user.Email, dbUser.Email);
         Assert.Equal(user.MobileNumber, dbUser.MobileNumber);
         Assert.Equal(user.Language, dbUser.Language);
+        Assert.Equal(user.Culture, dbUser.Culture);
         Assert.Equal(user.CreatedAt, dbUser.CreatedAt);
         Assert.Equal(user.UpdatedAt, dbUser.UpdatedAt);
         Assert.Equal(user.PasswordHash, dbUser.PasswordHash);
