@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace UsersApp.Infrastructure.Authentication;
+namespace UsersApp.Api.Authentication;
 
 [Index(nameof(Key), IsUnique = true)]
 public class ApiClient

@@ -1,11 +1,12 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-using UsersApp.Infrastructure;
 using UsersApp.Services;
 using UsersApp.Api;
-using UsersApp.Infrastructure.Authentication;
+using UsersApp.Api.Authentication;
+using UsersApp.Database;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddSerilog(lc => lc
     .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning));
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -36,7 +38,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             }
         })
     );
-;
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IPasswordHasher<string>, PasswordHasher<string>>();

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using UsersApp.Api.Requests;
 using UsersApp.Api.Responses;
+using UsersApp.Database;
 using UsersApp.Infrastructure;
 using UsersApp.Tests.EndPointTests.Helpers;
 

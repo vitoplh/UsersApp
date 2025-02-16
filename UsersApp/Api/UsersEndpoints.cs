@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UsersApp.Api.Authentication;
 using UsersApp.Mapping;
 using UsersApp.Api.Requests;
 using UsersApp.Api.Responses;
-using UsersApp.Infrastructure.Authentication;
+using UsersApp.Api.Validation;
 using UsersApp.Services;
 
 namespace UsersApp.Api;
@@ -17,8 +18,10 @@ internal static class UsersEndpoints
             .AddEndpointFilter<ApiKeyFilter>();
 
         group.MapGet("/{username}", GetUser);
-        group.MapPost("/", CreateUser);
-        group.MapPut("{username}", UpdateUser);
+        group.MapPost("/", CreateUser)
+            .AddEndpointFilter<ValidationFilter<CreateUserRequest>>();
+        group.MapPut("{username}", UpdateUser)
+            .AddEndpointFilter<ValidationFilter<UpdateUserRequest>>();
         group.MapDelete("{username}", DeleteUser);
         group.MapPost("{username}", ValidatePassword);
         

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
+using UsersApp.Database;
 using UsersApp.Domain;
 using UsersApp.Infrastructure;
 using UsersApp.Services;

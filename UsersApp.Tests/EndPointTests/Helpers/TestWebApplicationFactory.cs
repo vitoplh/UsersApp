@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UsersApp.Api.Authentication;
+using UsersApp.Database;
 using UsersApp.Infrastructure;
-using UsersApp.Infrastructure.Authentication;
 
 namespace UsersApp.Tests.EndPointTests.Helpers;
 

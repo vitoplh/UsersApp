@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using UsersApp.Database;
+using UsersApp.Infrastructure;
 
-namespace UsersApp.Infrastructure.Authentication;
+namespace UsersApp.Api.Authentication;
 
 public class ApiKeyFilter(AppDbContext dbContext) : IEndpointFilter
 {

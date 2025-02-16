@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using UsersApp.Database;
 using UsersApp.Domain;
 using UsersApp.Infrastructure;
 
